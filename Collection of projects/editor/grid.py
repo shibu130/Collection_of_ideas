@@ -1,21 +1,19 @@
-# grid.py
-
 import pygame
 
 class Grid:
-    def __init__(self, size=(200, 200), offset=(0, 0)):
-        self.size = size
-        self.offset = offset
-        self.cell_size = 10
+    def __init__(self, screen, cell_size=20):
+        self.screen = screen
+        self.cell_size = cell_size
+        self.width = int(screen.get_width() / cell_size)
+        self.height = int(screen.get_height() / cell_size)
 
-    def render(self, screen):
-        left, top = self.offset
-        right, bottom = left + self.size[0], top + self.size[1]
-
-        for x in range(left, right, self.cell_size):
-            pygame.draw.line(screen, (150, 150, 150), (x, top), (x, bottom))
-        for y in range(top, bottom, self.cell_size):
-            pygame.draw.line(screen, (150, 150, 150), (left, y), (right, y))
-
-    def update_offset(self, dx, dy):
-        self.offset = (self.offset[0] + dx, self.offset[1] + dy)
+    def render(self, camera_offset=(0, 0)):
+        offset_x, offset_y = camera_offset
+        for y in range(self.height):
+            for x in range(self.width):
+                pygame.draw.rect(self.screen, (200, 200, 200), 
+                                 ((x * self.cell_size) + offset_x,
+                                  (y * self.cell_size) + offset_y,
+                                  self.cell_size,
+                                  self.cell_size),
+                                 1)
